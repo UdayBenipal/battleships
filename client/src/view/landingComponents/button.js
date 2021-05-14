@@ -1,4 +1,3 @@
-import './components.css'
 import PropTypes from 'prop-types';
 
 const Button = ({ className, text, onClick }) => {

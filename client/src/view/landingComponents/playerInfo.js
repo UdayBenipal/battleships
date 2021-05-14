@@ -7,10 +7,7 @@ const PlayerInfo = ({ gameMode, setGameInfo }) => {
     const history = useHistory();
 
     const [error, setError] = useState('');
-    const [data, setData] = useState({
-        playerName: '',
-        roomName: ''
-    });
+    const [data, setData] = useState({ playerName: '', roomName: ''});
 
     const { playerName, roomName } = data
     

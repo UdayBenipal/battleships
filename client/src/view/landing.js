@@ -1,7 +1,7 @@
 import './landing.css';
 import { useState } from 'react';
-import SelectMode from './components/selectMode.js';
-import PlayerInfo from './components/playerInfo.js'
+import SelectMode from './landingComponents/selectMode.js';
+import PlayerInfo from './landingComponents/playerInfo.js'
 
 const Landing = ({ setGameInfo} ) => {
 

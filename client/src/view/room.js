@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import PlayerGrid from './components/playerGrid.js';
-import ShipsGrid from './components/shipsGrid.js';
-import EnemyGrid from './components/enemyGrid.js';
-import Message from './components/message.js'
+import PlayerGrid from './roomComponents/playerGrid.js';
+import ShipsGrid from './roomComponents/shipsGrid.js';
+import EnemyGrid from './roomComponents/enemyGrid.js';
+import Message from './roomComponents/message.js'
 
 const Room = ({data}) => {
     const history = useHistory();
