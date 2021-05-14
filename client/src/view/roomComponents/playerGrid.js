@@ -1,7 +1,6 @@
 const PlayerGrid = () => {
     return (
-        <div>
-            PlayerGrid
+        <div className="playerGrid">
         </div>
     )
 };

@@ -1,7 +1,6 @@
 const ShipsGrid = () => {
     return (
-        <div>
-            ShipGrid
+        <div className="shipsGrid">
         </div>
     )
 };

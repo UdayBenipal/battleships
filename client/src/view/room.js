@@ -1,10 +1,11 @@
+import './room.css';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import PlayerGrid from './roomComponents/playerGrid.js';
 import ShipsGrid from './roomComponents/shipsGrid.js';
 import EnemyGrid from './roomComponents/enemyGrid.js';
-import Message from './roomComponents/message.js'
+import Info from './roomComponents/info.js'
 
 const Room = ({data}) => {
     const history = useHistory();
@@ -41,14 +42,16 @@ const Room = ({data}) => {
     }, [data]);
 
     return (
-        <div>
+        <div className='backGround'>
+            <Info/>
+            <div className='gridContainer'>
             <PlayerGrid/>
-            {
-            player.ready ?
-            <EnemyGrid/> :
-            <ShipsGrid/>
-            }
-            <Message/>
+                {
+                player.ready ?
+                <EnemyGrid/> :
+                <ShipsGrid/>
+                }
+            </div>
         </div>
     )
 }
