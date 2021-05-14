@@ -1,0 +1,34 @@
+.background {
+  height: 100%;
+  background-image: url('../background.jpg');
+  background-position: 70% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 0);
+  margin: 0;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9vw;
+  font-weight: 900;
+  color: rgba(220, 220, 220, 0.85);
+}
+
+.container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translate(-50%, 0);
+  background-color: rgb(220, 220, 220, 0.85);
+  border: 4px solid white;
+  border-radius: 20px;
+}
