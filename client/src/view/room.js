@@ -11,11 +11,14 @@ const Room = ({data}) => {
     const history = useHistory();
 
     const [roomName, setRoomName] = useState(null);
+
     const [player, setPlayer] = useState({ ready : false});
+    const [shipsPlaced, setShipsPlaced] = useState([false, false, false, false, false]);
+
     const [enemy, setEnemy] = useState(null);
 
-    const [draggedShip, setDraggedShip] = useState({
-        id: -1, name: '', length: -1
+    const [draggedShip, setDraggedShip] = useState({ 
+        index: -1, name: '', length: -1 , isVertical: true
     });
 
     useEffect(() => {
@@ -45,15 +48,32 @@ const Room = ({data}) => {
         }
     }, [data]);
 
+    const setShipPlaced = name => {
+        let mshipsPlaced = [...shipsPlaced];
+
+        if('destroyer'===name) mshipsPlaced[0]=true;
+        else if('submarine'===name) mshipsPlaced[1]=true;
+        else if('cruiser'===name) mshipsPlaced[2]=true;
+        else if('battleship'===name) mshipsPlaced[3]=true;
+        else if('carrier'===name) mshipsPlaced[4]=true;
+
+        setShipsPlaced(mshipsPlaced);
+
+        let allShipsPlaced = true;
+        mshipsPlaced.forEach(ship => { allShipsPlaced = allShipsPlaced && ship });
+
+        if(allShipsPlaced) setPlayer({...player, ready: true});
+    }
+
     return (
         <div className='backGround'>
             <Info roomName={roomName}/>
             <div className='gridContainer'>
-            <PlayerGrid/>
+            <PlayerGrid draggedShip={draggedShip} setShipPlaced={setShipPlaced}/>
                 {
                 player.ready ?
                 <EnemyGrid/> :
-                <ShipsGrid setDraggedShip={setDraggedShip}/>
+                <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/>
                 }
             </div>
         </div>

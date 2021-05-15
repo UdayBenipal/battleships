@@ -42,14 +42,39 @@
   flex-wrap: wrap;
   background-color: #03a9f4;
   margin: 10px;
-  border: 0.1px solid white;
+  border: 0.1px solid rgba(255, 255, 255, 0.7);
   overflow: hidden;
 }
 
 .playerGrid div {
   width: 10%;
   height: 10%;
-  border: 0.1px solid white;
+  border: 0.1px solid rgba(255, 255, 255, 0.7);
+}
+
+div.taken {
+  background-color: #578018;
+  border: none;
+}
+
+.top {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.right {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.bottom {
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.left {
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
 }
 
 .shipsGrid {
@@ -94,8 +119,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -105,8 +128,6 @@
   margin: 10px;
   margin-top: 5%;
   display: flex;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -117,8 +138,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -128,8 +147,6 @@
   margin: 10px;
   margin-top: 5%;
   display: flex;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -140,8 +157,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -152,8 +167,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -164,8 +177,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -175,8 +186,6 @@
   margin: 10px;
   margin-top: 5%;
   display: flex;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -187,8 +196,6 @@
   margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
@@ -198,18 +205,18 @@
   margin: 10px;
   margin-top: 5%;
   display: flex;
-  border-radius: 50%;
-  background-color: #578018;
   cursor: move;
 }
 
 .vertical div {
   width: 100%;
+  background-color: #578018;
 }
 
 .horizontal div {
   flex-grow: 1;
   height: 100%;
+  background-color: #578018;
 }
 
 .btnContainer {
