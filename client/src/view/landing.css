@@ -37,7 +37,6 @@
   display: inline-block;
   color: #fff;
   border: none;
-  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
@@ -56,6 +55,7 @@
 .setModeBtn {
   height: 50px;
   width: 300px;
+  padding: 10px 20px;
   margin: 20px 0;
   background-color: orange;
 }
@@ -63,6 +63,7 @@
 .playerInfoBtn {
   height: 50px;
   width: 300px;
+  padding: 10px 20px;
   margin-bottom: 20px;
   background-color: #1b82e6;
 }
