@@ -1,5 +1,5 @@
 import './room.css';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import PlayerGrid from './roomComponents/playerGrid.js';
@@ -13,6 +13,10 @@ const Room = ({data}) => {
     const [roomName, setRoomName] = useState(null);
     const [player, setPlayer] = useState({ ready : false});
     const [enemy, setEnemy] = useState(null);
+
+    const [draggedShip, setDraggedShip] = useState({
+        id: -1, name: '', length: -1
+    });
 
     useEffect(() => {
         const fetchAndStoreData = async () => {
@@ -43,13 +47,13 @@ const Room = ({data}) => {
 
     return (
         <div className='backGround'>
-            <Info/>
+            <Info roomName={roomName}/>
             <div className='gridContainer'>
             <PlayerGrid/>
                 {
                 player.ready ?
                 <EnemyGrid/> :
-                <ShipsGrid/>
+                <ShipsGrid setDraggedShip={setDraggedShip}/>
                 }
             </div>
         </div>

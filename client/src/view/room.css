@@ -37,11 +37,19 @@
   height: 45vw;
   max-width: 90vh;
   max-height: 90vh;
-  border-radius: 10px;
+  border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
   background-color: #03a9f4;
   margin: 10px;
+  border: 0.1px solid white;
+  overflow: hidden;
+}
+
+.playerGrid div {
+  width: 10%;
+  height: 10%;
+  border: 0.1px solid white;
 }
 
 .shipsGrid {
@@ -62,7 +70,7 @@
   height: 45vw;
   max-width: 90vh;
   max-height: 90vh;
-  border-radius: 10px;
+  border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
   background-color: #03a9f4;
@@ -75,7 +83,7 @@
   font-weight: normal;
   font-size: 1vw;
   text-align: center;
-  padding: 10% 0;
+  padding: 6% 0;
   color: rgb(223, 152, 0);
 }
 
@@ -88,6 +96,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .destroyerContainer.horizontal {
@@ -98,6 +107,7 @@
   display: flex;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .submarineContainer.vertical {
@@ -109,6 +119,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .submarineContainer.horizontal {
@@ -119,6 +130,7 @@
   display: flex;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .cruiserContainer.vertical {
@@ -130,6 +142,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .cruiserContainer.horizontal {
@@ -141,6 +154,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .battleshipContainer.vertical {
@@ -152,6 +166,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .battleshipContainer.horizontal {
@@ -162,6 +177,7 @@
   display: flex;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .carrierContainer.vertical {
@@ -173,6 +189,7 @@
   flex-wrap: wrap;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .carrierContainer.horizontal {
@@ -183,6 +200,7 @@
   display: flex;
   border-radius: 50%;
   background-color: #578018;
+  cursor: move;
 }
 
 .vertical div {
@@ -196,7 +214,7 @@
 
 .btnContainer {
   width: 100%;
-  padding-bottom: 10%;
+  padding-bottom: 8%;
   display: flex;
   justify-content: space-around;
 }

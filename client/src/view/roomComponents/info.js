@@ -1,8 +1,6 @@
-const Info = () => {
+const Info = ({ roomName }) => {
     return (
-        <div className='info'>
-            Very big rgggffffffffffgggoom
-        </div>
+        <div className='info'>{roomName}</div>
     )
 };
 
