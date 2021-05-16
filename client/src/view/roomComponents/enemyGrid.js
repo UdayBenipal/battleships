@@ -7,7 +7,7 @@ const EnemyGrid = () => {
     const generateShip = (name, length) => {
         const width = 10;
         let mutiplier = 1;
-        let direction = Math.floor(Math.random() * 2);\
+        let direction = Math.floor(Math.random() * 2);
 
         let offset = length-1;
         let start = -1;
