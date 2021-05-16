@@ -7,7 +7,7 @@ import ShipsGrid from './roomComponents/shipsGrid.js';
 import EnemyGrid from './roomComponents/enemyGrid.js';
 import Info from './roomComponents/info.js'
 
-import { initiateSocket, markReady, onStartGame } from '../Socket';
+import { initiateSocket, markReady, onStartGame, onFireResult } from '../Socket';
 
 const Room = ({data}) => {
     const history = useHistory();
@@ -25,7 +25,11 @@ const Room = ({data}) => {
     });
     
     const [enemy, setEnemy] = useState({ ready : false, number: -1});
-    const [compTurn, setCompTurn] = useState(false);   
+    const [compTurn, setCompTurn] = useState(false);
+
+    const [result, setResult] = useState({
+        index: -1, result: undefined
+    });  
 
     useEffect(() => {
         const fetchAndStoreData = async () => {
@@ -69,9 +73,10 @@ const Room = ({data}) => {
         if(allShipsPlaced) {
             setPlayer({...player, ready: true});
             if('single'===data.gameMode) {
+                setStartGame(true);
                 changeTurn();
             } else if('multi'===data.gameMode) {
-                initiateSocket();
+                initiateSocket(roomName);
 
                 onStartGame(({ players }) => {
                     setEnemy(players.find(p => p.name!==player.name));
@@ -79,7 +84,11 @@ const Room = ({data}) => {
                     setStartGame(true);
                 });
 
-                markReady(roomName, player.number);
+                onFireResult(({ index, result }) => {
+                    setResult({ index, result });
+                });
+
+                markReady(player.number);
             }
         }
     }
@@ -106,12 +115,12 @@ const Room = ({data}) => {
         <div className='backGround'>
             <Info roomName={roomName}/>
             <div className='gridContainer'>
-                <PlayerGrid draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn}/>
+                <PlayerGrid gameMode={data.gameMode} draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn} changeTurn={changeTurn}/>
                 {
                 !player.ready ?
                 <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/> :
                 startGame ?
-                <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn}/> :
+                <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn} result={result}/> :
                 <h1>waiting for the opponent to place all their ships after connecting</h1>
                 }
             </div>

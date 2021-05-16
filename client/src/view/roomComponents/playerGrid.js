@@ -1,13 +1,42 @@
 import { useState, useEffect } from 'react';
+import { onCheckFire, fireReply } from '../../Socket';
+import EnemyGrid from './enemyGrid';
 
-const PlayerGrid = ({ draggedShip, setShipPlaced, compTurn, setCompTurn}) => {
+const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTurn, changeTurn }) => {
     const [grid, setGrid] = useState([]);
+
+    const [update, setUpdate] = useState({ index:-2 });
+
+    useEffect(() => {
+        const index = update.index;
+        const mgrid = [...grid]; 
+
+        if(index>=0 && 
+           !mgrid[index]?.includes('hit') && 
+           !mgrid[index]?.includes('miss')) {
+            
+            if(mgrid[index]?.includes('taken')) mgrid[index] += ' hit';
+            else mgrid[index] += ' miss';
+
+            setGrid(mgrid);
+            changeTurn();
+        }
+    }, [update, grid, changeTurn]);
 
     useEffect(() => {
         let squares = [];
         for(let i = 0; i < 100; i++) {squares.push(undefined);}
         setGrid(squares);
-    }, []);
+    }, [gameMode]);
+
+    useEffect(() => {
+        if('multi'===gameMode) {
+            onCheckFire(({ index }) => { 
+                fireReply(index, grid[index]);
+                setUpdate({ index });
+            });
+        }
+    }, [gameMode, grid]);
 
     useEffect(() => {
         let mgrid = [...grid];

@@ -23,11 +23,21 @@ io.on('connection', socket => {
         const [err, players] = markPlayerReady(roomName, playerNumber);
 
         if(err) return;
-        
+
         socket.join(roomName);
 
         if(startGame(roomName)) io.in(roomName).emit('startGame', { players });
     })
+
+    socket.on('fire', ({ roomName, index }) => {
+        // console.log(`attack on ${index}`);
+        socket.to(roomName).emit('checkFire', { index });
+    });
+
+    socket.on('fireReply', ({ roomName, index, reply }) => {
+        // console.log(reply);
+        socket.to(roomName).emit('fireResult', { index, result: reply });
+    });
 });
 //     //when player connects
 //     socket.on('joinGame', ({playerName, roomName}) => {

@@ -1,8 +1,25 @@
 import { useState, useEffect } from 'react';
+import { fire } from '../../Socket';
 
-const EnemyGrid = ({ gameMode, player, turn, changeTurn }) => {
+const EnemyGrid = ({ gameMode, player, turn, changeTurn, result }) => {
     const [grid, setGrid] = useState([]);
     const [computerGrid, setCompuerGrid] = useState([]);
+
+    useEffect(() => {
+        const mresult = {...result};
+        const mgrid = [...grid]; 
+
+        if(mresult.index>=0 && 
+           !mgrid[mresult.index]?.includes('hit') && 
+           !mgrid[mresult.index]?.includes('miss')) {
+            
+            if(mresult.result?.includes('taken')) mgrid[mresult.index] += ' hit';
+            else mgrid[mresult.index] += ' miss';
+
+            setGrid(mgrid);
+            changeTurn();
+        }
+    }, [result, grid, changeTurn]);
 
     const revealSquare = e => {
         const i = parseInt(e.target.dataset.id);
@@ -14,12 +31,14 @@ const EnemyGrid = ({ gameMode, player, turn, changeTurn }) => {
             return;
         }
 
-        if(computerGrid[i]?.includes('taken')) mgrid[i] += ' hit';
-        else mgrid[i] += ' miss';
-
-        setGrid(mgrid);
-
-        changeTurn();
+        if('single'===gameMode) {
+            if(computerGrid[i]?.includes('taken')) mgrid[i] += ' hit';
+            else mgrid[i] += ' miss';
+            setGrid(mgrid);
+            changeTurn();
+        } else if('multi'===gameMode){
+            fire(i);
+        }
     };
 
     useEffect(() => {
@@ -70,6 +89,7 @@ const EnemyGrid = ({ gameMode, player, turn, changeTurn }) => {
             generateShip('carrier', 5, mComputerGrid);
 
             setCompuerGrid(mComputerGrid);
+
         }
     }, [gameMode]);
 
