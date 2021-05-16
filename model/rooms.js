@@ -33,8 +33,28 @@ function getRoom(roomName) {
     return room;
 }
 
+function markPlayerReady(roomName, playerNumber) {
+    let room = rooms.find(room => room.name === roomName);
+
+    if(room==null) return [true, null];
+
+    room.players[playerNumber-1].ready = true;
+
+    return [false, room.players];
+}
+
+function startGame(roomName) {
+    let room = rooms.find(room => room.name === roomName);
+
+    if(room.players.length<2) return false;
+
+    return (room.players[0].ready && room.players[1].ready);
+}
+
 module.exports = {
     roomExists,
     addPlayer,
-    getRoom
+    getRoom,
+    markPlayerReady,
+    startGame
 };

@@ -1,11 +1,11 @@
 const express = require('express');
 const http = require('http');
-// const socketio = require('socket.io');
-// const { addPlayer, removePlayer, markPlayerReady, startGame, findRoomName } = require('./rooms')
+const socketio = require('socket.io');
+const { markPlayerReady, startGame } = require('./model/rooms')
 
 const app = express();
 const server = http.createServer(app);
-// const io = socketio(server);
+const io = socketio(server);
 
 app.use(express.json( { extended: false }));
 
@@ -14,8 +14,21 @@ app.get('/', (req, res) => res.send('Api all set'));
 //Define Route
 app.use('/api/room', require('./api/room'));
 
-// io.on('connection', socket => {
-//     // console.log("connction established");
+
+
+io.on('connection', socket => {
+    console.log("connction established");
+
+    socket.on('ready', ({ roomName, playerNumber }) => {
+        const [err, players] = markPlayerReady(roomName, playerNumber);
+
+        if(err) return;
+        
+        socket.join(roomName);
+
+        if(startGame(roomName)) io.in(roomName).emit('startGame', { players });
+    })
+});
 //     //when player connects
 //     socket.on('joinGame', ({playerName, roomName}) => {
 //         // console.log(`${playerName} joined the ${roomName}`);

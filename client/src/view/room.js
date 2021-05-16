@@ -7,8 +7,12 @@ import ShipsGrid from './roomComponents/shipsGrid.js';
 import EnemyGrid from './roomComponents/enemyGrid.js';
 import Info from './roomComponents/info.js'
 
+import { initiateSocket, markReady, onStartGame } from '../Socket';
+
 const Room = ({data}) => {
     const history = useHistory();
+
+    const [startGame, setStartGame] = useState(false);
 
     const [roomName, setRoomName] = useState(null);
 
@@ -32,7 +36,6 @@ const Room = ({data}) => {
                 const players = res.data.players;
 
                 setPlayer(players.find(p => p.name===data.playerName));
-                if(players.length===2) setEnemy(players.find(p => p.name!==data.playerName));
             } catch(err) {
                 console.error(err.response.data);
             }
@@ -65,9 +68,18 @@ const Room = ({data}) => {
 
         if(allShipsPlaced) {
             setPlayer({...player, ready: true});
-            //socket ready call and start game
             if('single'===data.gameMode) {
                 changeTurn();
+            } else if('multi'===data.gameMode) {
+                initiateSocket();
+
+                onStartGame(({ players }) => {
+                    setEnemy(players.find(p => p.name!==player.name));
+                    changeTurn();
+                    setStartGame(true);
+                });
+
+                markReady(roomName, player.number);
             }
         }
     }
@@ -96,9 +108,11 @@ const Room = ({data}) => {
             <div className='gridContainer'>
                 <PlayerGrid draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn}/>
                 {
-                player.ready ?
+                !player.ready ?
+                <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/> :
+                startGame ?
                 <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn}/> :
-                <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/>
+                <h1>waiting for the opponent to place all their ships after connecting</h1>
                 }
             </div>
         </div>
