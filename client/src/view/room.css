@@ -32,6 +32,22 @@
   justify-content: space-evenly;
 }
 
+.waitMsg {
+  width: 45vw;
+  height: 45vw;
+  max-width: 90vh;
+  max-height: 90vh;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: normal;
+  font-size: 3vh;
+  text-align: center;
+  color: rgb(223, 152, 0);
+}
+
 .playerGrid {
   width: 45vw;
   height: 45vw;
@@ -285,6 +301,12 @@ div.taken {
   .shipsGrid {
     width: 40vh;
     height: 40vh;
+  }
+
+  .waitMsg {
+    width: 40vh;
+    height: 40vh;
+    font-size: 2.5vh;
   }
 
   .enemyGrid {

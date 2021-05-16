@@ -5,6 +5,7 @@ import axios from 'axios';
 import PlayerGrid from './roomComponents/playerGrid.js';
 import ShipsGrid from './roomComponents/shipsGrid.js';
 import EnemyGrid from './roomComponents/enemyGrid.js';
+import WaitMsg from './roomComponents/waitMsg.js';
 import Info from './roomComponents/info.js'
 
 import { initiateSocket, markReady, onStartGame, onFireResult } from '../Socket';
@@ -121,7 +122,7 @@ const Room = ({data}) => {
                 <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/> :
                 startGame ?
                 <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn} result={result}/> :
-                <h1>waiting for the opponent to place all their ships after connecting</h1>
+                <WaitMsg/>
                 }
             </div>
         </div>
