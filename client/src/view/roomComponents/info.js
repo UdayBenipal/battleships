@@ -1,6 +1,6 @@
-const Info = ({ roomName }) => {
+const Info = ({ roomName, topText }) => {
     return (
-        <div className='info'>{roomName}</div>
+        <div className='info'>{topText===undefined ? roomName : topText}</div>
     )
 };
 

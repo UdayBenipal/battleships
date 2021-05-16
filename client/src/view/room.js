@@ -13,6 +13,8 @@ import { initiateSocket, markReady, onStartGame, onFireResult } from '../Socket'
 const Room = ({data}) => {
     const history = useHistory();
 
+    const [topText, setTopText] = useState(undefined);
+
     const [startGame, setStartGame] = useState(false);
 
     const [roomName, setRoomName] = useState(null);
@@ -101,20 +103,21 @@ const Room = ({data}) => {
 
     useEffect(() => {
         if(turn===player.number) {
-            console.log('your turn');
-        } else if(turn===enemy.number) {
-            console.log('oponents turn');
+            setTopText('Your Turn');
+        } else if(turn===enemy.number) {;
             if(data.gameMode==='single') {
                 setCompTurn(true);
                 if(1===turn) setTurn(2);
                 else if(2===turn || -2===turn) setTurn(1);
+            } else if(data.gameMode==='multi') {
+                setTopText(`${enemy.name}'s Turn`)
             }
         }
     }, [turn, player.number, enemy.number, data]);
 
     return (
         <div className='backGround'>
-            <Info roomName={roomName}/>
+            <Info roomName={roomName} topText={topText} />
             <div className='gridContainer'>
                 <PlayerGrid gameMode={data.gameMode} draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn} changeTurn={changeTurn}/>
                 {
