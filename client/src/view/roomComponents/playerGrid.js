@@ -41,7 +41,7 @@ const PlayerGrid = ({ draggedShip, setShipPlaced}) => {
         }
 
         for(let i=0; i<length; ++i) {
-            if(mgrid[start+i]!==undefined) {
+            if(mgrid[start+(i*multilpier)]!==undefined) {
                 console.log(`${start+i} is taken`);
                 return;
             }
