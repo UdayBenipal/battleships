@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
-const { markPlayerReady, startGame, removeRoom } = require('./model/rooms')
+const { markPlayerReady, startGame } = require('./model/rooms')
 
 const app = express();
 const server = http.createServer(app);
@@ -25,10 +25,7 @@ io.on('connection', socket => {
 
         socket.join(roomName);
 
-        if(startGame(roomName)) {
-            io.in(roomName).emit('startGame', { players });
-            removeRoom(roomName);
-        }
+        if(startGame(roomName)) io.in(roomName).emit('startGame', { players });
     })
 
     socket.on('fire', ({ roomName, index }) => {

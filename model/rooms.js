@@ -52,9 +52,9 @@ function startGame(roomName) {
     return (room.players[0].ready && room.players[1].ready);
 }
 
-function removeRoom(roomName) {
-    rooms = rooms.filter(room => room.name !== roomName);
-}
+// function removeRoom(roomName) {
+//     rooms = rooms.filter(room => room.name !== roomName);
+// }
 
 
 module.exports = {
@@ -62,6 +62,5 @@ module.exports = {
     addPlayer,
     getRoom,
     markPlayerReady,
-    startGame,
-    removeRoom,
+    startGame
 };
