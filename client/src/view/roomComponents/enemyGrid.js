@@ -1,25 +1,38 @@
 import { useState, useEffect } from 'react';
 import { fire } from '../../Socket';
 
-const EnemyGrid = ({ gameMode, player, turn, changeTurn, result }) => {
+const EnemyGrid = ({ gameMode, player, turn, changeTurn, result, setMessage }) => {
     const [grid, setGrid] = useState([]);
     const [computerGrid, setCompuerGrid] = useState([]);
 
     useEffect(() => {
         const mresult = {...result};
-        const mgrid = [...grid]; 
+        const mgrid = [...grid];
 
         if(mresult.index>=0 && 
            !mgrid[mresult.index]?.includes('hit') && 
            !mgrid[mresult.index]?.includes('miss')) {
             
-            if(mresult.result?.includes('taken')) mgrid[mresult.index] += ' hit';
+            if(mresult.result?.includes('taken')) {
+                mgrid[mresult.index] += ' hit';
+
+                let hits = 0;
+                mgrid.forEach(square => {
+                    if(square?.includes('hit')) {
+                        hits+=1;
+                    }
+                });
+
+                if(hits===17) {
+                    setMessage("You Won");
+                }
+            }
             else mgrid[mresult.index] += ' miss';
 
             setGrid(mgrid);
             changeTurn();
         }
-    }, [result, grid, changeTurn]);
+    }, [result, grid, changeTurn, setMessage]);
 
     const revealSquare = e => {
         const i = parseInt(e.target.dataset.id);
@@ -32,8 +45,21 @@ const EnemyGrid = ({ gameMode, player, turn, changeTurn, result }) => {
         }
 
         if('single'===gameMode) {
-            if(computerGrid[i]?.includes('taken')) mgrid[i] += ' hit';
-            else mgrid[i] += ' miss';
+            let hits = 0;
+            if(computerGrid[i]?.includes('taken')) {
+                mgrid[i] += ' hit';
+
+                mgrid.forEach(square => {
+                    if(square?.includes('hit')) {
+                        hits+=1;
+                    }
+                });
+
+                if(hits===17) {
+                    setMessage("You Won");
+                }
+
+            } else mgrid[i] += ' miss';
             setGrid(mgrid);
             changeTurn();
         } else if('multi'===gameMode){

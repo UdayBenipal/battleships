@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { onCheckFire, fireReply } from '../../Socket';
-import EnemyGrid from './enemyGrid';
 
-const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTurn, changeTurn }) => {
+const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTurn, changeTurn, setMessage }) => {
     const [grid, setGrid] = useState([]);
 
     const [update, setUpdate] = useState({ index:-2 });
@@ -15,13 +14,26 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
            !mgrid[index]?.includes('hit') && 
            !mgrid[index]?.includes('miss')) {
             
-            if(mgrid[index]?.includes('taken')) mgrid[index] += ' hit';
+            if(mgrid[index]?.includes('taken')) {
+                mgrid[index] += ' hit';
+
+                let hits = 0;
+                mgrid.forEach(square => {
+                    if(square?.includes('hit')) {
+                        hits+=1;
+                    }
+                });
+
+                if(hits===17) {
+                    setMessage("Opponent Won");
+                }
+            }
             else mgrid[index] += ' miss';
 
             setGrid(mgrid);
             changeTurn();
         }
-    }, [update, grid, changeTurn]);
+    }, [update, grid, changeTurn, setMessage]);
 
     useEffect(() => {
         let squares = [];
@@ -53,7 +65,21 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
             // else if(square.classList.contains('battleship')) battleshipCountCPU+=1;
             // else if(square.classList.contains('carrier')) carrierCountCPU+=1;
 
-            if(mgrid[i]?.includes('taken')) mgrid[i] += ' hit';
+            if(mgrid[i]?.includes('taken')) {
+                mgrid[i] += ' hit';
+
+                let hits = 0;
+                mgrid.forEach(square => {
+                    if(square?.includes('hit')) {
+                        hits+=1;
+                    }
+                });
+
+                if(hits===17) {
+                    setMessage("Opponent Won");
+                }
+
+            }
             else mgrid[i] += ' miss';
         }
 
@@ -63,7 +89,7 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
             setGrid(mgrid);
         }
 
-    }, [grid, compTurn, setCompTurn]);
+    }, [grid, compTurn, setCompTurn, setMessage]);
 
     const placeShip = (e) => {
         let mgrid = [...grid];
@@ -81,7 +107,6 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
             let top = index;
             let bottom = (length-1)-top;
             if((y-top)<0 || width<=(y+bottom)) {
-                console.log('oob v', top, bottom);
                 return;
             }
             start = dropLocation-(top*width);
@@ -90,7 +115,6 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
             let left = index;
             let right = (length-1)-left;
             if((x-left)<0 || width<=(x+right)) {
-                console.log('oob h', left, right);
                 return;
             }
             start = dropLocation-left;
@@ -98,7 +122,6 @@ const PlayerGrid = ({ gameMode, draggedShip, setShipPlaced, compTurn, setCompTur
 
         for(let i=0; i<length; ++i) {
             if(mgrid[start+(i*multilpier)]?.includes('taken')) {
-                console.log(`${start+i} is taken`);
                 return;
             }
         }

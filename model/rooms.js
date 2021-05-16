@@ -1,4 +1,4 @@
-const rooms = []
+let rooms = []
 /*
 Structure:
     rooms --> [{name, players: [player1, player2]}]
@@ -15,8 +15,10 @@ function addPlayer(playerName, roomName) {
     let player = {name: playerName, ready: false};
 
     if(room===undefined) {
+        if(rooms.length>20) rooms = [];
+
         player.number = 1;
-        room = { name: roomName, players: [player]};
+        room = { name: roomName, players: [player], id: []};
         rooms.push(room);
     } else {
         if(room.players.length===2) return false;
@@ -24,7 +26,6 @@ function addPlayer(playerName, roomName) {
         player.number = 2;
         room.players.push(player);
     }
-    console.log(room);
     return true;
 }
 
@@ -51,10 +52,16 @@ function startGame(roomName) {
     return (room.players[0].ready && room.players[1].ready);
 }
 
+function removeRoom(roomName) {
+    rooms = rooms.filter(room => room.name !== roomName);
+}
+
+
 module.exports = {
     roomExists,
     addPlayer,
     getRoom,
     markPlayerReady,
-    startGame
+    startGame,
+    removeRoom,
 };

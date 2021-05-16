@@ -16,8 +16,6 @@ const ShipsGrid = ({ setDraggedShip, shipsPlaced }) => {
         else if('battleship'===name) length=4;
         else if('carrier'===name) length=5;
 
-        console.log({ index, name, length });
-
         setDraggedShip({ index, name, length, isVertical });
     };
 

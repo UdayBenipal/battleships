@@ -7,11 +7,14 @@ import ShipsGrid from './roomComponents/shipsGrid.js';
 import EnemyGrid from './roomComponents/enemyGrid.js';
 import WaitMsg from './roomComponents/waitMsg.js';
 import Info from './roomComponents/info.js'
+import Dialog from './roomComponents/dialog.js'
 
 import { initiateSocket, markReady, onStartGame, onFireResult } from '../Socket';
 
 const Room = ({data}) => {
     const history = useHistory();
+
+    const [message, setMessage] = useState(undefined);
 
     const [topText, setTopText] = useState(undefined);
 
@@ -97,6 +100,11 @@ const Room = ({data}) => {
     }
 
     const changeTurn = () => {
+        if(message!==undefined) {
+            setTurn(20);
+            return;
+        }
+
         if(1===turn) setTurn(2);
         else if(2===turn || -2===turn) setTurn(1);
     }
@@ -113,21 +121,22 @@ const Room = ({data}) => {
                 setTopText(`${enemy.name}'s Turn`)
             }
         }
-    }, [turn, player.number, enemy.number, data]);
+    }, [turn, player.number, enemy.number, enemy.name, data]);
 
     return (
         <div className='backGround'>
             <Info roomName={roomName} topText={topText} />
             <div className='gridContainer'>
-                <PlayerGrid gameMode={data.gameMode} draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn} changeTurn={changeTurn}/>
+                <PlayerGrid gameMode={data.gameMode} draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn} changeTurn={changeTurn} setMessage={setMessage}/>
                 {
                 !player.ready ?
                 <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/> :
                 startGame ?
-                <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn} result={result}/> :
+                <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn} result={result} setMessage={setMessage}/> :
                 <WaitMsg/>
                 }
             </div>
+            {message !== undefined && (<Dialog message={message}/>)}
         </div>
     )
 }
