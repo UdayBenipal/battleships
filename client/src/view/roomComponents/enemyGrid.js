@@ -1,56 +1,77 @@
 import { useState, useEffect } from 'react';
 
-const EnemyGrid = () => {
+const EnemyGrid = ({ gameMode, player, turn, changeTurn }) => {
     const [grid, setGrid] = useState([]);
+    const [computerGrid, setCompuerGrid] = useState([]);
 
-    const computerGrid = [];
-    const generateShip = (name, length) => {
-        const width = 10;
-        let mutiplier = 1;
-        let direction = Math.floor(Math.random() * 2);
+    const revealSquare = e => {
+        const i = parseInt(e.target.dataset.id);
+        let mgrid = [...grid];
 
-        let offset = length-1;
-        let start = -1;
-        if(direction===0) { //vertical
-            mutiplier = 10;
-            let randomX = Math.floor(Math.random()*(width));
-            let randomY = Math.floor(Math.random()*(width-offset));
-            start = (width*randomY)+randomX;
-        } else if(direction===1) { //horizontal
-            let randomX = Math.floor(Math.random()*(width-offset));
-            let randomY = Math.floor(Math.random()*(width));
-            start = (width*randomY)+randomX;
+        if(turn!==player.number ||
+           mgrid[i]?.includes('hit') || 
+           mgrid[i]?.includes('miss')) {
+            return;
         }
 
-        let isTaken = false;
-        for(let i = 0; i < length; ++i) {
-            isTaken = isTaken || (computerGrid[start+(i*mutiplier)] !== undefined);
-        }
+        if(computerGrid[i]?.includes('taken')) mgrid[i] += ' hit';
+        else mgrid[i] += ' miss';
 
-        if(!isTaken) {
-            for(let i = 0; i < length; ++i) {
-                computerGrid[start+(i*mutiplier)] = `taken ${name}`;
-            }
-        } else {
-            generateShip(name, length);
-        }
-    }
+        setGrid(mgrid);
+
+        changeTurn();
+    };
 
     useEffect(() => {
+        const generateShip = (name, length, mComputerGrid) => {
+            const width = 10;
+            let mutiplier = 1;
+            let direction = Math.floor(Math.random() * 2);
+
+            let offset = length-1;
+            let start = -1;
+            if(direction===0) { //vertical
+                mutiplier = 10;
+                let randomX = Math.floor(Math.random()*(width));
+                let randomY = Math.floor(Math.random()*(width-offset));
+                start = (width*randomY)+randomX;
+            } else if(direction===1) { //horizontal
+                let randomX = Math.floor(Math.random()*(width-offset));
+                let randomY = Math.floor(Math.random()*(width));
+                start = (width*randomY)+randomX;
+            }
+
+            let isTaken = false;
+            for(let i = 0; i < length; ++i) {
+                isTaken = isTaken || (mComputerGrid[start+(i*mutiplier)]?.includes('taken'));
+            }
+
+            if(!isTaken) {
+                for(let i = 0; i < length; ++i) {
+                    mComputerGrid[start+(i*mutiplier)] = `taken ${name}`;
+                }
+            } else {
+                generateShip(name, length, mComputerGrid);
+            }
+        };
+
         let squares = [];
-        for(let i = 0; i < 100; i++) {
-            squares.push(undefined);
-            computerGrid.push(undefined);
-        }
+        for(let i = 0; i < 100; i++) { squares.push(undefined); }
         setGrid(squares);
 
-        generateShip('destroyer', 2);
-        generateShip('submarine', 3);
-        generateShip('cruiser', 3);
-        generateShip('battleship', 4);
-        generateShip('carrier', 5);
-        console.log(computerGrid);
-    }, []);
+        if('single'===gameMode) {
+            let mComputerGrid = [];
+            for(let i = 0; i < 100; i++) { mComputerGrid.push(undefined); }
+
+            generateShip('destroyer', 2, mComputerGrid);
+            generateShip('submarine', 3, mComputerGrid);
+            generateShip('cruiser', 3, mComputerGrid);
+            generateShip('battleship', 4, mComputerGrid);
+            generateShip('carrier', 5, mComputerGrid);
+
+            setCompuerGrid(mComputerGrid);
+        }
+    }, [gameMode]);
 
     return (
         <div className='enemyGrid'>
@@ -58,6 +79,8 @@ const EnemyGrid = () => {
                 return (<div 
                     data-id={i} key={i}
                     className={classNames}
+                    onClick={revealSquare}
+                    onTouchEnd={revealSquare}
                 />)
             })}
         </div>

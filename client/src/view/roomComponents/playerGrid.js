@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const PlayerGrid = ({ draggedShip, setShipPlaced}) => {
+const PlayerGrid = ({ draggedShip, setShipPlaced, compTurn, setCompTurn}) => {
     const [grid, setGrid] = useState([]);
 
     useEffect(() => {
@@ -8,6 +8,33 @@ const PlayerGrid = ({ draggedShip, setShipPlaced}) => {
         for(let i = 0; i < 100; i++) {squares.push(undefined);}
         setGrid(squares);
     }, []);
+
+    useEffect(() => {
+        let mgrid = [...grid];
+
+        const computerTurn = () => {
+            let i = Math.floor(Math.random()*100);
+            let square = mgrid[i];
+
+            if(square?.includes('hit') || square?.includes('miss')) computerTurn();
+
+            // if(square.classList.contains('destroyer')) destroyerCountCPU+=1;
+            // else if(square.classList.contains('submarine')) submarineCountCPU+=1;
+            // else if(square.classList.contains('cruiser')) cruiserCountCPU+=1;
+            // else if(square.classList.contains('battleship')) battleshipCountCPU+=1;
+            // else if(square.classList.contains('carrier')) carrierCountCPU+=1;
+
+            if(mgrid[i]?.includes('taken')) mgrid[i] += ' hit';
+            else mgrid[i] += ' miss';
+        }
+
+        if(compTurn) {
+            setCompTurn(false);
+            computerTurn();
+            setGrid(mgrid);
+        }
+
+    }, [grid, compTurn, setCompTurn]);
 
     const placeShip = (e) => {
         let mgrid = [...grid];
@@ -41,7 +68,7 @@ const PlayerGrid = ({ draggedShip, setShipPlaced}) => {
         }
 
         for(let i=0; i<length; ++i) {
-            if(mgrid[start+(i*multilpier)]!==undefined) {
+            if(mgrid[start+(i*multilpier)]?.includes('taken')) {
                 console.log(`${start+i} is taken`);
                 return;
             }
@@ -59,7 +86,7 @@ const PlayerGrid = ({ draggedShip, setShipPlaced}) => {
 
         setShipPlaced(name);
         setGrid(mgrid);
-    };
+    }
 
     return (
         <div className="playerGrid"> 

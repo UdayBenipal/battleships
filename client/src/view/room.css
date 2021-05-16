@@ -110,6 +110,30 @@ div.taken {
   border: 0.1px solid rgba(255, 255, 255, 0.7);
 }
 
+.hit,
+.miss {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hit::after,
+.miss::after {
+  content: '';
+  position: absolute;
+  border-radius: 100%;
+  width: 1.5%;
+  height: 3%;
+}
+
+.hit::after {
+  background-color: red;
+}
+
+.miss::after {
+  background-color: white;
+}
+
 .instructions {
   width: 100%;
   font-family: 'Press Start 2P', cursive;
@@ -263,6 +287,11 @@ div.taken {
     height: 40vh;
   }
 
+  .enemyGrid {
+    width: 40vh;
+    height: 40vh;
+  }
+
   .instructions {
     font-size: 1.2vh;
   }
@@ -271,5 +300,19 @@ div.taken {
     width: 24vh;
     height: 6vh;
     font-size: 2vh;
+  }
+
+  .hit::after,
+  .miss::after {
+    width: 1.2%;
+    height: 1%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .hit::after,
+  .miss::after {
+    width: 2%;
+    height: 1%;
   }
 }

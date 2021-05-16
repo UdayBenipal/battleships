@@ -12,14 +12,16 @@ const Room = ({data}) => {
 
     const [roomName, setRoomName] = useState(null);
 
-    const [player, setPlayer] = useState({ ready : false});
+    const [turn, setTurn] = useState(-2);
+
+    const [player, setPlayer] = useState({ ready : false, number: -1});
     const [shipsPlaced, setShipsPlaced] = useState([false, false, false, false, false]);
-
-    const [enemy, setEnemy] = useState(null);
-
     const [draggedShip, setDraggedShip] = useState({ 
         index: -1, name: '', length: -1 , isVertical: true
     });
+    
+    const [enemy, setEnemy] = useState({ ready : false, number: -1});
+    const [compTurn, setCompTurn] = useState(false);   
 
     useEffect(() => {
         const fetchAndStoreData = async () => {
@@ -31,7 +33,6 @@ const Room = ({data}) => {
 
                 setPlayer(players.find(p => p.name===data.playerName));
                 if(players.length===2) setEnemy(players.find(p => p.name!==data.playerName));
-
             } catch(err) {
                 console.error(err.response.data);
             }
@@ -46,7 +47,7 @@ const Room = ({data}) => {
         } else {
             history.push('/');
         }
-    }, [data]);
+    }, [data, history]);
 
     const setShipPlaced = name => {
         let mshipsPlaced = [...shipsPlaced];
@@ -62,17 +63,41 @@ const Room = ({data}) => {
         let allShipsPlaced = true;
         mshipsPlaced.forEach(ship => { allShipsPlaced = allShipsPlaced && ship });
 
-        if(allShipsPlaced) setPlayer({...player, ready: true});
+        if(allShipsPlaced) {
+            setPlayer({...player, ready: true});
+            //socket ready call and start game
+            if('single'===data.gameMode) {
+                changeTurn();
+            }
+        }
     }
+
+    const changeTurn = () => {
+        if(1===turn) setTurn(2);
+        else if(2===turn || -2===turn) setTurn(1);
+    }
+
+    useEffect(() => {
+        if(turn===player.number) {
+            console.log('your turn');
+        } else if(turn===enemy.number) {
+            console.log('oponents turn');
+            if(data.gameMode==='single') {
+                setCompTurn(true);
+                if(1===turn) setTurn(2);
+                else if(2===turn || -2===turn) setTurn(1);
+            }
+        }
+    }, [turn, player.number, enemy.number, data]);
 
     return (
         <div className='backGround'>
             <Info roomName={roomName}/>
             <div className='gridContainer'>
-            <PlayerGrid draggedShip={draggedShip} setShipPlaced={setShipPlaced}/>
+                <PlayerGrid draggedShip={draggedShip} setShipPlaced={setShipPlaced} compTurn={compTurn} setCompTurn={setCompTurn}/>
                 {
                 player.ready ?
-                <EnemyGrid/> :
+                <EnemyGrid gameMode={data.gameMode} player={player} turn={turn} changeTurn={changeTurn}/> :
                 <ShipsGrid setDraggedShip={setDraggedShip} shipsPlaced={shipsPlaced}/>
                 }
             </div>
