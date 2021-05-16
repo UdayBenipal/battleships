@@ -340,24 +340,24 @@ div.taken {
   }
 
   .playerGrid {
-    width: 40vh;
-    height: 40vh;
+    width: 35vh;
+    height: 35vh;
   }
 
   .shipsGrid {
-    width: 40vh;
-    height: 40vh;
+    width: 35vh;
+    height: 35vh;
   }
 
   .waitMsg {
-    width: 40vh;
-    height: 40vh;
+    width: 35vh;
+    height: 35vh;
     font-size: 2.5vh;
   }
 
   .enemyGrid {
-    width: 40vh;
-    height: 40vh;
+    width: 35vh;
+    height: 35vh;
   }
 
   .instructions {
