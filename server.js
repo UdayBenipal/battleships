@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
-const { markPlayerReady, startGame, removeRoom } = require('./model/rooms')
+const { markPlayerReady, startGame } = require('./model/rooms')
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +26,6 @@ io.on('connection', socket => {
 
         if(startGame(roomName)) {
             io.in(roomName).emit('startGame', { players });
-            removeRoom(roomName);
         }
     });
 
