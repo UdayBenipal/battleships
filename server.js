@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
-const { markPlayerReady, startGame } = require('./model/rooms')
+const { markPlayerReady, startGame, removeRoom } = require('./model/rooms')
 
 const app = express();
 const server = http.createServer(app);
@@ -18,7 +18,7 @@ app.use('/api/room', require('./api/room'));
 io.on('connection', socket => {
 
     socket.on('ready', ({ roomName, playerNumber }) => {
-        const [err, players] = markPlayerReady(roomName, playerNumber);
+        const [err, players] = markPlayerReady(roomName, playerNumber, socket.id);
 
         if(err) return;
 
@@ -33,6 +33,10 @@ io.on('connection', socket => {
 
     socket.on('fireReply', ({ roomName, index, reply }) => {
         socket.to(roomName).emit('fireResult', { index, result: reply });
+    });
+
+    socket.on('disconnect', () => {
+        removeRoom(socket.id);
     });
 });
 
