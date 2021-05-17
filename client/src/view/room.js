@@ -118,7 +118,7 @@ const Room = ({data}) => {
                 if(1===turn) setTurn(2);
                 else if(2===turn || -2===turn) setTurn(1);
             } else if(data.gameMode==='multi') {
-                setTopText(`${enemy.name}'s Turn`)
+                setTopText(`${enemy.name.toUpperCase()}'s Turn`)
             }
         }
     }, [turn, player.number, enemy.number, enemy.name, data]);
