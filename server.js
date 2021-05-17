@@ -18,14 +18,17 @@ app.use('/api/room', require('./api/room'));
 io.on('connection', socket => {
 
     socket.on('ready', ({ roomName, playerNumber }) => {
-        const [err, players] = markPlayerReady(roomName, playerNumber, socket.id);
+        const [err, players] = markPlayerReady(roomName, playerNumber);
 
         if(err) return;
 
         socket.join(roomName);
 
-        if(startGame(roomName)) io.in(roomName).emit('startGame', { players });
-    })
+        if(startGame(roomName)) {
+            io.in(roomName).emit('startGame', { players });
+            removeRoom(roomName);
+        }
+    });
 
     socket.on('fire', ({ roomName, index }) => {
         socket.to(roomName).emit('checkFire', { index });
@@ -33,10 +36,6 @@ io.on('connection', socket => {
 
     socket.on('fireReply', ({ roomName, index, reply }) => {
         socket.to(roomName).emit('fireResult', { index, result: reply });
-    });
-
-    socket.on('disconnect', () => {
-        removeRoom(socket.id);
     });
 });
 
